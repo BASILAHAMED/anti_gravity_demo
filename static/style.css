@@ -1,0 +1,444 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --bg-gradient-start: #0f0c29;
+    --bg-gradient-mid: #302b63;
+    --bg-gradient-end: #24243e;
+    --calculator-bg: rgba(255, 255, 255, 0.05);
+    --calculator-border: rgba(255, 255, 255, 0.1);
+    --display-bg: rgba(0, 0, 0, 0.3);
+    --btn-bg: rgba(255, 255, 255, 0.08);
+    --btn-hover: rgba(255, 255, 255, 0.15);
+    --btn-active: rgba(255, 255, 255, 0.25);
+    --text-primary: #ffffff;
+    --text-secondary: rgba(255, 255, 255, 0.6);
+    --operator-color: #64b5f6;
+    --equals-gradient-start: #667eea;
+    --equals-gradient-end: #764ba2;
+    --function-color: #ef5350;
+    --shadow-color: rgba(0, 0, 0, 0.3);
+}
+
+body {
+    font-family: 'Outfit', sans-serif;
+    background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-mid) 50%, var(--bg-gradient-end) 100%);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    position: relative;
+}
+
+body::before {
+    content: '';
+    position: absolute;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(102, 126, 234, 0.1) 0%, transparent 70%);
+    animation: rotate 20s linear infinite;
+}
+
+@keyframes rotate {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.container {
+    position: relative;
+    z-index: 1;
+    padding: 20px;
+}
+
+.calculator {
+    background: var(--calculator-bg);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--calculator-border);
+    border-radius: 24px;
+    padding: 30px;
+    box-shadow: 0 20px 60px var(--shadow-color);
+    width: 380px;
+    animation: fadeIn 0.6s ease-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.display {
+    background: var(--display-bg);
+    border-radius: 16px;
+    padding: 24px;
+    margin-bottom: 24px;
+    min-height: 120px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: flex-end;
+    word-wrap: break-word;
+    word-break: break-all;
+    box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.previous-operand {
+    color: var(--text-secondary);
+    font-size: 1.2rem;
+    font-weight: 300;
+    min-height: 24px;
+    margin-bottom: 8px;
+}
+
+.current-operand {
+    color: var(--text-primary);
+    font-size: 2.5rem;
+    font-weight: 600;
+    min-height: 48px;
+    transition: all 0.2s ease;
+}
+
+.buttons {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+}
+
+.btn {
+    background: var(--btn-bg);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    color: var(--text-primary);
+    font-size: 1.4rem;
+    font-weight: 400;
+    font-family: 'Outfit', sans-serif;
+    padding: 24px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    backdrop-filter: blur(10px);
+    position: relative;
+    overflow: hidden;
+}
+
+.btn::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+}
+
+.btn:hover::before {
+    width: 300px;
+    height: 300px;
+}
+
+.btn:hover {
+    background: var(--btn-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.btn:active {
+    background: var(--btn-active);
+    transform: translateY(0);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.btn.operator {
+    color: var(--operator-color);
+    font-weight: 600;
+}
+
+.btn.function {
+    color: var(--function-color);
+    font-weight: 600;
+}
+
+.btn.equals {
+    background: linear-gradient(135deg, var(--equals-gradient-start) 0%, var(--equals-gradient-end) 100%);
+    color: var(--text-primary);
+    font-weight: 600;
+    grid-column: span 2;
+    border: none;
+}
+
+.btn.equals:hover {
+    background: linear-gradient(135deg, var(--equals-gradient-start) 0%, var(--equals-gradient-end) 100%);
+    filter: brightness(1.1);
+}
+
+.btn.zero {
+    grid-column: span 1;
+}
+
+/* Ripple effect */
+.btn {
+    position: relative;
+    overflow: hidden;
+}
+
+.btn span {
+    position: relative;
+    z-index: 1;
+}
+
+/* Responsive design */
+@media (max-width: 480px) {
+    .calculator {
+        width: 100%;
+        max-width: 380px;
+        padding: 20px;
+    }
+    
+    .btn {
+        padding: 20px;
+        font-size: 1.2rem;
+    }
+    
+    .current-operand {
+        font-size: 2rem;
+    }
+}
+
+/* Error state */
+.display.error .current-operand {
+    color: var(--function-color);
+    animation: shake 0.4s ease;
+}
+
+@keyframes shake {
+    0%, 100% {
+        transform: translateX(0);
+    }
+    25% {
+        transform: translateX(-10px);
+    }
+    75% {
+        transform: translateX(10px);
+    }
+}
+
+/* Timer Styles */
+.timer-container {
+    background: var(--calculator-bg);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--calculator-border);
+    border-radius: 24px;
+    padding: 30px;
+    box-shadow: 0 20px 60px var(--shadow-color);
+    width: 380px;
+    margin-top: 24px;
+    animation: fadeIn 0.6s ease-out 0.2s backwards;
+}
+
+.timer-label {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    font-weight: 300;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    text-align: center;
+    margin-bottom: 16px;
+}
+
+.timer-display {
+    background: var(--display-bg);
+    border-radius: 16px;
+    padding: 32px 24px;
+    margin-bottom: 24px;
+    color: var(--text-primary);
+    font-size: 3rem;
+    font-weight: 600;
+    text-align: center;
+    box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.2);
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 4px;
+    transition: all 0.3s ease;
+}
+
+.timer-display.running {
+    color: #64b5f6;
+    box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.2), 0 0 20px rgba(100, 181, 246, 0.2);
+}
+
+.timer-controls {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+}
+
+.timer-btn {
+    flex: 1;
+    background: var(--btn-bg);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    color: var(--text-primary);
+    font-size: 0.9rem;
+    font-weight: 500;
+    font-family: 'Outfit', sans-serif;
+    padding: 16px 20px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    backdrop-filter: blur(10px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    position: relative;
+    overflow: hidden;
+}
+
+.timer-btn svg {
+    transition: transform 0.2s ease;
+}
+
+.timer-btn::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+}
+
+.timer-btn:hover::before {
+    width: 300px;
+    height: 300px;
+}
+
+.timer-btn:hover {
+    background: var(--btn-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.timer-btn:hover svg {
+    transform: scale(1.1);
+}
+
+.timer-btn:active {
+    background: var(--btn-active);
+    transform: translateY(0);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.timer-btn.start-btn {
+    color: #4caf50;
+}
+
+.timer-btn.start-btn:hover {
+    background: rgba(76, 175, 80, 0.1);
+}
+
+.timer-btn.start-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.timer-btn.start-btn:disabled:hover {
+    background: var(--btn-bg);
+    transform: none;
+    box-shadow: none;
+}
+
+.timer-btn.stop-btn {
+    color: #ff9800;
+}
+
+.timer-btn.stop-btn:hover {
+    background: rgba(255, 152, 0, 0.1);
+}
+
+.timer-btn.stop-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.timer-btn.stop-btn:disabled:hover {
+    background: var(--btn-bg);
+    transform: none;
+    box-shadow: none;
+}
+
+.timer-btn.reset-btn {
+    color: #ef5350;
+}
+
+.timer-btn.reset-btn:hover {
+    background: rgba(239, 83, 80, 0.1);
+}
+
+.timer-btn.reset-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.timer-btn.reset-btn:disabled:hover {
+    background: var(--btn-bg);
+    transform: none;
+    box-shadow: none;
+}
+
+/* Pulse animation for running timer */
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.8;
+    }
+}
+
+.timer-display.running {
+    animation: pulse 2s ease-in-out infinite;
+}
+
+/* Responsive design for timer */
+@media (max-width: 480px) {
+    .timer-container {
+        width: 100%;
+        max-width: 380px;
+        padding: 20px;
+    }
+    
+    .timer-display {
+        font-size: 2.5rem;
+        padding: 24px 16px;
+    }
+    
+    .timer-btn {
+        padding: 14px 16px;
+        font-size: 0.85rem;
+    }
+    
+    .timer-btn svg {
+        width: 16px;
+        height: 16px;
+    }
+}

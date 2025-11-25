@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern Calculator</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container">
+        <div class="calculator">
+            <div class="display">
+                <div class="previous-operand" id="previous-operand"></div>
+                <div class="current-operand" id="current-operand">0</div>
+            </div>
+            <div class="buttons">
+                <button class="btn function" onclick="clearDisplay()">AC</button>
+                <button class="btn function" onclick="deleteLast()">DEL</button>
+                <button class="btn operator" onclick="appendOperator('%')">%</button>
+                <button class="btn operator" onclick="appendOperator('/')">÷</button>
+
+                <button class="btn number" onclick="appendNumber('7')">7</button>
+                <button class="btn number" onclick="appendNumber('8')">8</button>
+                <button class="btn number" onclick="appendNumber('9')">9</button>
+                <button class="btn operator" onclick="appendOperator('*')">×</button>
+
+                <button class="btn number" onclick="appendNumber('4')">4</button>
+                <button class="btn number" onclick="appendNumber('5')">5</button>
+                <button class="btn number" onclick="appendNumber('6')">6</button>
+                <button class="btn operator" onclick="appendOperator('-')">−</button>
+
+                <button class="btn number" onclick="appendNumber('1')">1</button>
+                <button class="btn number" onclick="appendNumber('2')">2</button>
+                <button class="btn number" onclick="appendNumber('3')">3</button>
+                <button class="btn operator" onclick="appendOperator('+')">+</button>
+
+                <button class="btn number zero" onclick="appendNumber('0')">0</button>
+                <button class="btn number" onclick="appendNumber('.')">.</button>
+                <button class="btn equals" onclick="calculate()">=</button>
+            </div>
+        </div>
+
+        <div class="timer-container">
+            <div class="timer-label">Timer</div>
+            <div class="timer-display" id="timer-display">00:00:00</div>
+            <div class="timer-controls">
+                <button class="timer-btn start-btn" id="start-btn" onclick="startTimer()">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                    </svg>
+                    Start
+                </button>
+                <button class="timer-btn stop-btn" id="stop-btn" onclick="stopTimer()">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="6" y="4" width="4" height="16"></rect>
+                        <rect x="14" y="4" width="4" height="16"></rect>
+                    </svg>
+                    Stop
+                </button>
+                <button class="timer-btn reset-btn" id="reset-btn" onclick="resetTimer()">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="1 4 1 10 7 10"></polyline>
+                        <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path>
+                    </svg>
+                    Reset
+                </button>
+            </div>
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+
+</html>
